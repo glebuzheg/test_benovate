@@ -14,3 +14,4 @@ redis_data/
 pg_data/
 __pycache__/
 media/
+templates/
