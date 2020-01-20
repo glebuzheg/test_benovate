@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.contrib.auth.models import AbstractUser, UserManager as BaseUserManager
 from django.db import models
 from django.db.models import F
@@ -15,12 +17,12 @@ class UserManager(BaseUserManager.from_queryset(UserQuerySet)):
 
 class User(AbstractUser):
     inn = models.CharField(verbose_name='ИНН', max_length=13, null=True)
-    balance = models.DecimalField(verbose_name='Баланс', max_digits=10, decimal_places=2, null=True)
+    balance = models.DecimalField(verbose_name='Баланс', default=Decimal(0), max_digits=10, decimal_places=2,)
     objects = UserManager()
 
     class Meta:
         verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
     def __str__(self):
         return self.get_full_name() or self.username

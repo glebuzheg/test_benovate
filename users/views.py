@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from rest_framework.generics import ListAPIView, UpdateAPIView
+from rest_framework.generics import UpdateAPIView, ListCreateAPIView
 from rest_framework.permissions import AllowAny
 
 from .serializers import UserSerializer, SendToUsersSerializer
@@ -7,7 +7,7 @@ from .serializers import UserSerializer, SendToUsersSerializer
 User = get_user_model()
 
 
-class UserListView(ListAPIView):
+class UserListView(ListCreateAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = (AllowAny,)

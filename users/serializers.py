@@ -6,15 +6,28 @@ User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
-    balance = serializers.DecimalField(max_digits=10, decimal_places=2, )
+    balance = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'inn', 'balance']
+        fields = ['id', 'username', 'password', 'first_name', 'last_name', 'inn', 'balance']
+        extra_kwargs = {
+            'username': {
+                'required': True
+            },
+            'password': {
+                'required': True,
+                'write_only': True
+            }
+        }
+
+    @transaction.atomic
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)
 
 
 class SendToUsersSerializer(serializers.ModelSerializer):
-    inns = serializers.ListField(child=serializers.CharField(required=False), required=False)
+    inns = serializers.ListField(child=serializers.CharField(required=False))
     amount = serializers.DecimalField(max_digits=10, decimal_places=2, )
 
     class Meta:
